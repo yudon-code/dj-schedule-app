@@ -64,7 +64,7 @@ export default function ScheduleView({ events }: { events: DJEvent[] }) {
 
             {/* 右ペイン：カレンダービュー */}
             <section className="w-full md:flex-1 h-auto md:h-screen p-3 md:p-6 lg:p-8 overflow-auto bg-[var(--color-surface-base)] relative custom-scrollbar">
-                <div className="max-w-6xl mx-auto h-full flex flex-col md:min-w-[900px] flex-shrink-0">
+                <div className="max-w-6xl mx-auto h-full flex flex-col">
                     <CalendarView
                         events={events}
                         onSelectEvent={handleSelectEvent}

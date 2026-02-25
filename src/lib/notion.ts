@@ -103,25 +103,25 @@ export async function getEvents(): Promise<DJEvent[]> {
                 return `${hours}:${mins}`;
             };
 
-            // 時間合成 (OPEN / START / CLOSE 等)
+            // 時間合成 ( [OPEN / ][START ～][ END] )
             const openTime = formatTime(getText(p["開場時間"]));
             const startTime = formatTime(getText(p["開始時間"]));
             const endTime = formatTime(getText(p["終了時間"]));
 
             let timeStr = "";
-            if (openTime && startTime && endTime) {
-                timeStr = `${openTime} / ${startTime} ～ ${endTime}`;
-            } else if (!openTime && startTime && endTime) {
-                timeStr = `${startTime} ～ ${endTime}`;
-            } else if (!openTime && startTime && !endTime) {
-                timeStr = `${startTime} ～`;
-            } else if (openTime || startTime || endTime) {
-                const parts = [];
-                if (openTime) parts.push(openTime);
-                if (startTime) parts.push(startTime); // Note: this logic might need refine if open but no start
-                if (endTime) parts.push(endTime);
-                timeStr = parts.join(" / ");
+            if (openTime) {
+                timeStr += `${openTime} / `;
             }
+            if (startTime) {
+                timeStr += `${startTime} ～`;
+                if (endTime) {
+                    timeStr += ` ${endTime}`;
+                }
+            } else if (endTime) {
+                timeStr += `～ ${endTime}`;
+            }
+
+            timeStr = timeStr.trim();
 
             const status = getText(p["ステータス"] || p["Status"]);
 

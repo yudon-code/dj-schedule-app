@@ -120,8 +120,8 @@ const CalendarView = memo(function CalendarView({
                 {/* 言語トグル除去済み (ScheduleViewへ移動) */}
             </header>
 
-            {/* カレンダー本体 - スマホ版で最小高さを確保 / PC版でも垂直崩れ防止の最小高さを設定 */}
-            <div className="flex-1 glass rounded-2xl border border-[var(--color-border-subtle)] overflow-hidden flex flex-col shadow-2xl min-h-[500px] md:min-h-[720px]">
+            {/* カレンダー本体 - ウィンドウに合わせて伸縮 */}
+            <div className="flex-1 glass rounded-2xl border border-[var(--color-border-subtle)] overflow-hidden flex flex-col shadow-2xl">
                 {/* 曜日ヘッダー */}
                 <div className="grid grid-cols-7 border-b border-[var(--color-border-subtle)] bg-[var(--color-surface-panel)]/50">
                     {weekDays.map((day, i) => (
@@ -148,7 +148,7 @@ const CalendarView = memo(function CalendarView({
                         return (
                             <div
                                 key={day.toString()}
-                                className={`min-h-[85px] md:min-h-[100px] min-w-[100px] md:min-w-[120px] border-b border-r border-[var(--color-border-subtle)]/30 p-1 relative transition-colors ${!isCurrentMonth ? "bg-black/20 opacity-40" : holiday?.isHoliday || i % 7 === 0 ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]" : i % 7 === 6 ? "bg-blue-500/[0.03] hover:bg-blue-500/[0.06]" : "hover:bg-white/[0.02]"
+                                className={`flex-1 min-h-0 min-w-0 border-b border-r border-[var(--color-border-subtle)]/30 p-1 relative transition-colors ${!isCurrentMonth ? "bg-black/20 opacity-40" : holiday?.isHoliday || i % 7 === 0 ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]" : i % 7 === 6 ? "bg-blue-500/[0.03] hover:bg-blue-500/[0.06]" : "hover:bg-white/[0.02]"
                                     } ${i % 7 === 6 ? "border-r-0" : ""}`}
                             >
                                 {/* 日付番号と祝日名 */}
@@ -166,7 +166,7 @@ const CalendarView = memo(function CalendarView({
                                         {format(day, dateFormat)}
                                     </span>
                                     {holiday?.isHoliday && (
-                                        <span className="text-[10px] text-red-400 font-bold truncate">
+                                        <span className="text-[10px] text-red-400 font-bold truncate hidden md:block">
                                             {holiday.name}
                                         </span>
                                     )}
@@ -198,7 +198,7 @@ const CalendarView = memo(function CalendarView({
                                                                     src={event.flyerUrls[0]}
                                                                     alt={event.title}
                                                                     fill
-                                                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                                                    className="object-contain transform scale-100 group-hover:scale-110 transition-transform duration-500"
                                                                     sizes="(max-width: 768px) 100vw, 15vw"
                                                                 />
                                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-1.5">

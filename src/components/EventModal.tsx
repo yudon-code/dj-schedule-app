@@ -76,8 +76,8 @@ export default function EventModal({
                     <X className="w-5 h-5" />
                 </button>
 
-                {/* 左側：フライヤー画像 (モバイル時は上部) */}
-                <div className="w-full md:w-[38%] relative bg-black min-h-[250px] md:min-h-[400px] flex-shrink-0 group border-r border-[var(--color-border-subtle)]">
+                {/* 左側：フライヤー画像 (モバイル時は上部、1/3サイズに制限) */}
+                <div className="w-1/3 aspect-square md:w-1/3 md:aspect-auto md:min-h-[400px] mx-auto mt-6 md:mt-0 relative bg-black flex-shrink-0 group border border-[var(--color-border-subtle)] md:border-r md:border-l-0 rounded-xl md:rounded-none overflow-hidden">
                     {event.flyerUrls && event.flyerUrls.length > 0 ? (
                         <>
                             <Image
@@ -85,7 +85,7 @@ export default function EventModal({
                                 alt={`${event.title} - flyer ${currentImageIndex + 1}`}
                                 fill
                                 className="object-contain transition-opacity duration-300 cursor-zoom-in hover:scale-[1.02] transition-transform"
-                                sizes="(max-width: 768px) 100vw, 50vw"
+                                sizes="33vw"
                                 priority
                                 onClick={() => setIsEnlarged(true)}
                             />
@@ -177,15 +177,10 @@ export default function EventModal({
                                         {event.rawTime && (
                                             <span className="ml-1 opacity-60">
                                                 ({[
-                                                    event.rawTime.open ? "OPEN" : null,
-                                                    event.rawTime.start ? "START" : null,
-                                                    event.rawTime.end ? "END" : null
-                                                ].filter(Boolean).map((t, i, arr) => {
-                                                    if (t === "OPEN") return "OPEN";
-                                                    if (t === "START") return (arr.includes("OPEN") ? " / " : "") + "START";
-                                                    if (t === "END") return (arr.includes("START") ? " ～ " : " / ") + "END";
-                                                    return t;
-                                                }).join("")})
+                                                    event.rawTime.open ? "OPEN / " : "",
+                                                    event.rawTime.start ? "START ～" : "",
+                                                    event.rawTime.end ? " END" : ""
+                                                ].join("").trim()})
                                             </span>
                                         )}
                                     </p>
