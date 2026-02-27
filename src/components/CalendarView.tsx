@@ -86,7 +86,7 @@ const CalendarView = memo(function CalendarView({
                     </span>
                 </h2>
 
-                {/* 右側: 操作ボタン (確実に右端へ) */}
+                {/* 右側: 操作ボタン */}
                 <div className="flex items-center gap-2">
                     <button
                         onClick={prevMonth}
@@ -137,7 +137,7 @@ const CalendarView = memo(function CalendarView({
                         return (
                             <div
                                 key={day.toString()}
-                                className={`flex-1 min-h-0 min-w-0 border-b border-r border-[var(--color-border-subtle)]/30 p-1 relative transition-colors ${!isCurrentMonth ? "bg-black/20 opacity-40" : holiday?.isHoliday || i % 7 === 0 ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]" : i % 7 === 6 ? "bg-blue-500/[0.03] hover:bg-blue-500/[0.06]" : "hover:bg-white/[0.02]"} ${i % 7 === 6 ? "border-r-0" : ""}`}
+                                className={`flex-1 min-h-0 min-w-0 flex flex-col border-b border-r border-[var(--color-border-subtle)]/30 p-1 relative transition-colors ${!isCurrentMonth ? "bg-black/20 opacity-40" : holiday?.isHoliday || i % 7 === 0 ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]" : i % 7 === 6 ? "bg-blue-500/[0.03] hover:bg-blue-500/[0.06]" : "hover:bg-white/[0.02]"} ${i % 7 === 6 ? "border-r-0" : ""}`}
                             >
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className={`text-sm w-7 h-7 flex items-center justify-center rounded-full flex-shrink-0 ${isTodayDate ? "bg-[var(--color-brand-primary)] text-white font-bold shadow-lg" : i % 7 === 0 || holiday?.isHoliday ? "text-red-400 font-semibold" : i % 7 === 6 ? "text-blue-400 font-semibold" : "text-[var(--color-text-secondary)]"}`}>
@@ -148,12 +148,9 @@ const CalendarView = memo(function CalendarView({
                                     )}
                                 </div>
 
-                                {/* イベントグリッド: イベント数に応じてグリッド列数を動的に決定 */}
+                                {/* イベントグリッド */}
                                 {dayEvents.length > 0 && (
-                                    <div className={`grid overflow-hidden flex-1 min-h-[60px] ${dayEvents.length >= 2
-                                        ? 'grid-cols-2 gap-0.5'
-                                        : 'grid-cols-1'
-                                        }`}>
+                                    <div className={`grid overflow-hidden flex-1 min-h-[60px] ${dayEvents.length >= 2 ? 'grid-cols-2 gap-0.5' : 'grid-cols-1'}`}>
                                         {dayEvents.slice(0, 4).map((event) => {
                                             const isTBA = event.status === "公開(TBA)" || (!!event.tbaComment && event.tbaComment.trim() !== "");
                                             const isCanceled = event.status === "中止";
@@ -161,57 +158,53 @@ const CalendarView = memo(function CalendarView({
                                             const hasWarning = isCanceled || isPostponed;
 
                                             return (
-                                                <div key={event.id} className="relative min-h-0">
-                                                    <button
-                                                        onClick={() => onSelectEvent(event)}
-                                                        className={`absolute inset-0 group text-left overflow-hidden rounded ${hasWarning ? "opacity-50 grayscale" : ""}`}
-                                                        title={isTBA ? (event.tbaComment || "TBA") : event.title}
-                                                    >
-                                                        {event.flyerUrls?.length > 0 ? (
-                                                            /* フライヤーあり: absolute positioningで確実に描画 */
-                                                            <div className="absolute inset-0 bg-[var(--color-surface-elevated)] border border-[var(--color-border-subtle)] group-hover:border-[var(--color-brand-primary)]/50 transition-colors overflow-hidden">
-                                                                <Image
-                                                                    src={event.flyerUrls[0]}
-                                                                    alt={isTBA ? "TBA" : event.title}
-                                                                    fill
-                                                                    className="object-contain group-hover:scale-105 transition-transform duration-500"
-                                                                    sizes="(max-width: 768px) 15vw, 10vw"
-                                                                />
-                                                                {isTBA && (
-                                                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] z-10">
-                                                                        <span className="text-white font-bold text-xs tracking-widest bg-black/60 px-1.5 py-0.5 rounded border border-white/20">TBA</span>
-                                                                    </div>
-                                                                )}
-                                                                {hasWarning && (
-                                                                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
-                                                                        <span className="text-white font-bold text-[10px] px-1 rounded bg-red-500/80">{isCanceled ? "中止" : "延期"}</span>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        ) : (
-                                                            /* フライヤーなし: 塗りつぶし + TBAラベル */
-                                                            <div className="absolute inset-0 bg-[var(--color-brand-accent)]/20 border-2 border-[var(--color-brand-accent)]/40 text-[var(--color-brand-accent)] flex items-center justify-center text-center">
-                                                                <span className="font-bold text-[10px]">{isTBA ? "TBA" : ""}</span>
-                                                                {hasWarning && (
-                                                                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
-                                                                        <span className="text-white font-bold text-[10px] px-1 rounded bg-red-500/80">{isCanceled ? "中止" : "延期"}</span>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </button>
-                                                </div>
+                                                <button
+                                                    key={event.id}
+                                                    onClick={() => onSelectEvent(event)}
+                                                    className={`relative w-full h-full min-h-[40px] group text-left overflow-hidden rounded ${hasWarning ? "opacity-50 grayscale" : ""}`}
+                                                    title={isTBA ? (event.tbaComment || "TBA") : event.title}
+                                                >
+                                                    {event.flyerUrls && event.flyerUrls.length > 0 ? (
+                                                        <div className="absolute inset-0 bg-[var(--color-surface-elevated)] border border-[var(--color-border-subtle)] group-hover:border-[var(--color-brand-primary)]/50 transition-colors overflow-hidden">
+                                                            <Image
+                                                                src={event.flyerUrls[0]}
+                                                                alt={isTBA ? "TBA" : event.title}
+                                                                fill
+                                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                                sizes="(max-width: 768px) 15vw, 10vw"
+                                                            />
+                                                            {isTBA && (
+                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] z-10">
+                                                                    <span className="text-white font-bold text-xs tracking-widest bg-black/60 px-1.5 py-0.5 rounded border border-white/20">TBA</span>
+                                                                </div>
+                                                            )}
+                                                            {hasWarning && (
+                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
+                                                                    <span className="text-white font-bold text-[10px] px-1 rounded bg-red-500/80">{isCanceled ? "中止" : "延期"}</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="absolute inset-0 bg-[var(--color-brand-accent)]/20 border-2 border-[var(--color-brand-accent)]/40 text-[var(--color-brand-accent)] flex items-center justify-center text-center">
+                                                            <span className="font-bold text-[10px]">{isTBA ? "TBA" : ""}</span>
+                                                            {hasWarning && (
+                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
+                                                                    <span className="text-white font-bold text-[10px] px-1 rounded bg-red-500/80">{isCanceled ? "中止" : "延期"}</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </button>
                                             );
                                         })}
                                     </div>
-                                )
-                                }
+                                )}
                             </div>
                         );
                     })}
                 </div>
             </div>
-        </div >
+        </div>
     );
 });
 

@@ -188,22 +188,16 @@ export default function EventModal({
                                 <Clock className="w-5 h-5 mt-0.5 text-[var(--color-text-primary)]" />
                                 <div>
                                     <p className="text-xs uppercase tracking-wider font-semibold opacity-70 mb-1">
-                                        {/* notion.tsの時間文字列パターンに完全準拠したラベル導出。
-                                             "/" あり = OPENあり, チルダあり = START(またはEND)あり */}
-                                        {(() => {
-                                            const t = event.time || "";
-                                            // 全種類のチルダを正規化して判定（～=U+FF5E, 〜=U+301C, ~=U+007E）
-                                            const normalized = t.replace(/～|〜|~/g, 'TILDE');
-                                            const hasSlash = normalized.includes(" / ");
-                                            const hasTilde = normalized.includes("TILDE");
-                                            const startsWithTilde = normalized.startsWith("TILDE ");
-
-                                            if (hasSlash && hasTilde) return "TIME (OPEN / START ~)";
-                                            if (hasSlash) return "TIME (OPEN)";
-                                            if (hasTilde && !startsWithTilde) return "TIME (START ~)";
-                                            if (startsWithTilde) return "TIME (~ END)";
-                                            return "TIME";
-                                        })()}
+                                        Time
+                                        {event.rawTime && (
+                                            <span className="ml-1 opacity-60">
+                                                ({[
+                                                    event.rawTime.open ? "OPEN / " : "",
+                                                    event.rawTime.start ? "START ～" : "",
+                                                    event.rawTime.end ? " END" : ""
+                                                ].join("").trim()})
+                                            </span>
+                                        )}
                                     </p>
                                     <p className="text-[var(--color-text-primary)] text-base whitespace-pre-wrap">{event.time}</p>
                                 </div>
@@ -214,7 +208,7 @@ export default function EventModal({
                         {event.price && !isTBA && (
                             <div className="flex items-start gap-3 mt-2 text-[var(--color-text-secondary)]">
                                 <Ticket className="w-5 h-5 mt-0.5 text-[var(--color-text-primary)]" />
-                                <div>
+                                <div className="flex-1">
                                     <p className="text-xs uppercase tracking-wider font-semibold opacity-70 mb-1">Price</p>
                                     <p className="text-[var(--color-text-primary)] text-base whitespace-pre-wrap">{event.price}</p>
                                 </div>
