@@ -9,7 +9,7 @@ import EventModal from "./EventModal";
 export default function ScheduleView({ events }: { events: DJEvent[] }) {
     const [selectedEvent, setSelectedEvent] = useState<DJEvent | null>(null);
     const [currentMonth, setCurrentMonth] = useState(new Date());
-    const [language, setLanguage] = useState<"en" | "ja">("en");
+    const [language, setLanguage] = useState<"en" | "ja">("ja");
 
     const handleSelectEvent = useCallback((event: DJEvent) => {
         if (event.date) {
@@ -17,11 +17,7 @@ export default function ScheduleView({ events }: { events: DJEvent[] }) {
                 setCurrentMonth(parseISO(event.date));
             });
         }
-
-        // TBAの場合は詳細モーダルを表示しない（カレンダー移動のみ）
-        if (event.status !== "公開(TBA)") {
-            setSelectedEvent(event);
-        }
+        setSelectedEvent(event);
     }, []);
 
     return (
@@ -30,9 +26,13 @@ export default function ScheduleView({ events }: { events: DJEvent[] }) {
             <section className="w-full md:w-1/3 lg:w-[400px] h-[50vh] md:h-screen flex flex-col border-b md:border-b-0 md:border-r border-[var(--color-border-subtle)] bg-[var(--color-surface-panel)] z-10 shadow-2xl relative">
                 <div className="p-5 md:p-6 pb-2 md:pb-2 flex-shrink-0">
                     <div className="flex justify-between items-start mb-2">
-                        <h1 className="text-xl md:text-2xl font-bold tracking-tighter text-gradient leading-tight">
-                            YusukeUdon <br />
-                            DJ / LIVE SCHEDULE
+                        <h1 className="flex flex-col tracking-tighter leading-none">
+                            <span className="text-3xl md:text-4xl font-black text-gradient mb-1">
+                                YusukeUdon
+                            </span>
+                            <span className="text-xl md:text-2xl font-black text-gradient tracking-tighter uppercase">
+                                DJ / LIVE SCHEDULE
+                            </span>
                         </h1>
 
                         {/* 言語トグルをこちらに移動 */}

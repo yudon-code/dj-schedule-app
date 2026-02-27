@@ -135,7 +135,7 @@ const ListView = memo(function ListView({
                 displayEvents.map((event) => {
                     const eventDate = event.date ? parseISO(event.date) : new Date();
                     const past = isPast(eventDate);
-                    const isTBA = event.status === "公開(TBA)";
+                    const isTBA = event.status === "公開(TBA)" || event.title.toUpperCase().startsWith("TBA");
                     const isCanceled = event.status === "中止";
                     const isPostponed = event.status === "延期";
                     const hasWarning = isCanceled || isPostponed;
@@ -160,22 +160,20 @@ const ListView = memo(function ListView({
                                             src={event.flyerUrls[0]}
                                             alt=""
                                             fill
-                                            className="object-cover opacity-70 scale-110"
+                                            className="object-cover opacity-60 scale-110"
                                             sizes="64px"
                                             priority={displayEvents.indexOf(event) < 3}
                                         />
-                                        {/* 文字周りだけ暗くするための背景（GPU負荷低減のためブラーは廃止） */}
-                                        <div className="absolute inset-0 bg-black/70" />
                                     </>
                                 )}
                                 <div className="relative z-10 flex flex-col items-center text-center">
-                                    <span className="text-xs font-black text-[var(--color-brand-primary)] tracking-wider drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                                    <span className="text-xs font-black text-[var(--color-brand-primary)] tracking-wider drop-shadow-[0_1px_1px_rgba(0,0,0,1)] drop-shadow-[0_0_2px_rgba(0,0,0,1)] drop-shadow-[1px_0_1px_rgba(0,0,0,1)] drop-shadow-[-1px_0_1px_rgba(0,0,0,1)]">
                                         {format(eventDate, language === "ja" ? "M月" : "MMM")}
                                     </span>
-                                    <span className="text-xl font-black text-white leading-none mt-1 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                                    <span className="text-xl font-black text-white leading-none mt-1 drop-shadow-[0_1px_1px_rgba(0,0,0,1)] drop-shadow-[0_0_4px_rgba(0,0,0,1)] drop-shadow-[1px_1px_1px_rgba(0,0,0,1)] drop-shadow-[-1px_1px_1px_rgba(0,0,0,1)] drop-shadow-[1px_-1px_1px_rgba(0,0,0,1)] drop-shadow-[-1px_-1px_1px_rgba(0,0,0,1)]">
                                         {format(eventDate, "dd")}
                                     </span>
-                                    <span className="text-[10px] text-white font-bold mt-1 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                                    <span className="text-[10px] text-white font-bold mt-1 drop-shadow-[0_1px_1px_rgba(0,0,0,1)] drop-shadow-[0_0_2px_rgba(0,0,0,1)] drop-shadow-[1px_0_1px_rgba(0,0,0,0.8)]">
                                         {dayStr}
                                     </span>
                                 </div>
@@ -195,16 +193,21 @@ const ListView = memo(function ListView({
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
-                                    {event.location && (
+                                    {event.location && !isTBA && (
                                         <div className="flex items-center gap-1.5 text-[var(--color-text-secondary)]">
                                             <MapPin className="w-3.5 h-3.5 text-[var(--color-brand-primary)]" />
                                             <span className="text-xs font-medium truncate">{event.location}</span>
                                         </div>
                                     )}
-                                    {event.time && (
+                                    {event.time && !isTBA && (
                                         <div className="flex items-center gap-1.5 text-[var(--color-text-secondary)]">
                                             <Clock className="w-3.5 h-3.5 text-[var(--color-brand-primary)]" />
                                             <span className="text-xs font-medium">{event.time}</span>
+                                        </div>
+                                    )}
+                                    {isTBA && event.tbaComment && (
+                                        <div className="text-[var(--color-text-tertiary)] italic text-xs mt-0.5 border-l border-[var(--color-border-subtle)] pl-2">
+                                            {event.tbaComment}
                                         </div>
                                     )}
                                 </div>

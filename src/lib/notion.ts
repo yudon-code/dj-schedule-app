@@ -22,10 +22,12 @@ export type DJEvent = {
     detail?: string;
     flyerUrls: string[];
     status: string;
+    tbaComment?: string;
     holiday?: {
         isHoliday: boolean;
         name?: string;
     };
+    sortTime: string; // ソート用 (HHMM形式)
 };
 
 // Helper to extract text from rich_text or title property
@@ -152,10 +154,18 @@ export async function getEvents(): Promise<DJEvent[]> {
                 address: getText(p["住所"] || p["Address"] || p["会場住所"]),
                 detail: getText(p["イベント詳細"] || p["Detail"]),
                 status: status,
+                tbaComment: getText(p["TBAコメント"] || p["TBAComment"]),
                 flyerUrls,
                 holiday: holidayInfo.isHoliday ? holidayInfo : undefined,
+                sortTime: getText(p["開始時間"]) || "9999",
             };
-        }).filter(e => e.title && e.date && e.status !== "非公開"); // EventNameとDateがあるもの、かつ非公開でないものを有効とみなす
+        }).filter(e => e.title && e.date && e.status !== "非公開") // EventNameとDateがあるもの、かつ非公開でないものを有効とみなす
+            .sort((a, b) => {
+                // 第一ソート: 日付順
+                if (a.date !== b.date) return a.date.localeCompare(b.date);
+                // 第二ソート: 開始時間順
+                return a.sortTime.localeCompare(b.sortTime);
+            });
     } catch (error) {
         console.error("Failed to fetch events from Notion:", error);
         return [];

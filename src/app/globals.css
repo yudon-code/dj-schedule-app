@@ -7,19 +7,26 @@
   --font-mono: var(--font-geist-mono);
 
   /* カスタムカラー: ダークモード基調のスタイリッシュなパレット */
-  --color-brand-primary: #3b82f6; /* アクセントブルー */
-  --color-brand-accent: #8b5cf6;  /* アクセントパープル */
-  
-  --color-surface-base: #0f1115;    /* 一番背景の黒 */
-  --color-surface-panel: #16181d;   /* パネルやカードの黒 */
-  --color-surface-elevated: #1e2128;/* 浮き上がった要素の黒 */
-  --color-surface-hover: #262932;   /* ホバー時 */
+  --color-brand-primary: #3b82f6;
+  /* アクセントブルー */
+  --color-brand-accent: #8b5cf6;
+  /* アクセントパープル */
+
+  --color-surface-base: #0f1115;
+  /* 一番背景の黒 */
+  --color-surface-panel: #16181d;
+  /* パネルやカードの黒 */
+  --color-surface-elevated: #1e2128;
+  /* 浮き上がった要素の黒 */
+  --color-surface-hover: #262932;
+  /* ホバー時 */
 
   --color-text-primary: #ffffff;
   --color-text-secondary: #94a3b8;
   --color-text-tertiary: #64748b;
 
-  --color-border-subtle: #ffffff15; /* 薄いボーダー */
+  --color-border-subtle: #ffffff33;
+  /* 濃くしたボーダー */
 }
 
 /* デフォルトをダークモード相当に強制 */
@@ -41,13 +48,16 @@ body {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--color-surface-base);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-surface-elevated);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-surface-hover);
 }
@@ -65,4 +75,54 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* カレンダーの画像最適配置用コンテナクエリ */
+.cal-cell-container {
+  container-type: size;
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+}
+
+.cal-layout-1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.cal-layout-2 {
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+@container (min-aspect-ratio: 1/1) {
+  .cal-layout-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 1fr;
+  }
+}
+
+.cal-layout-3plus {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+/* 枠内で最大かつ常に正方形を保つためのアイテムラッパーと要素 */
+.item-wrapper {
+  container-type: size;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+}
+
+.cal-square {
+  aspect-ratio: 1 / 1;
+  width: 100cqmin;
+  height: 100cqmin;
 }
