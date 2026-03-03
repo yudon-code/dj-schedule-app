@@ -148,13 +148,13 @@ const ListView = memo(function ListView({
                             key={event.id}
                             onClick={() => onSelectEvent(event)}
                             className={`w-full flex items-start text-left py-2 px-3 rounded-xl border transition-all duration-300 ${isTBA ? "border-transparent bg-black/40 hover:bg-white/5" : past
-                                ? "border-transparent opacity-50 grayscale"
+                                ? "border-transparent opacity-75"
                                 : "border-[var(--color-border-subtle)] bg-[var(--color-surface-panel)] hover:border-[var(--color-brand-primary)]/50 hover:bg-[var(--color-surface-hover)] shadow-sm hover:shadow-lg hover:-translate-y-0.5"
                                 } ${hasWarning ? "grayscale opacity-50" : ""}`}
                         >
                             {/* 日付バッジ (フライヤー統合) */}
                             <div className="flex flex-col items-center justify-center w-14 h-16 rounded-lg bg-[var(--color-surface-panel)] border border-[var(--color-border-subtle)] flex-shrink-0 mr-3 py-1 relative overflow-hidden">
-                                {event.flyerUrls?.[0] && !isTBA && !past && (
+                                {event.flyerUrls?.[0] && !isTBA && (
                                     <>
                                         <Image
                                             src={event.flyerUrls[0]}
