@@ -82,7 +82,7 @@ export default function EventModal({
                 </button>
 
                 {/* 左側：フライヤー画像 */}
-                <div className="w-full md:w-1/3 aspect-square md:aspect-auto md:min-h-[400px] relative bg-black flex-shrink-0 group border border-[var(--color-border-subtle)] md:border-r md:border-l-0 overflow-hidden">
+                <div className="w-1/3 aspect-square md:w-1/3 md:aspect-auto md:min-h-[400px] mx-auto mt-6 md:mt-0 relative bg-black flex-shrink-0 group border border-[var(--color-border-subtle)] md:border-r md:border-l-0 rounded-xl md:rounded-none overflow-hidden">
                     {event.flyerUrls && event.flyerUrls.length > 0 ? (
                         <>
                             <Image
@@ -256,7 +256,24 @@ export default function EventModal({
                                 </h3>
                             </div>
                             <div className="prose prose-invert prose-sm max-w-none text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-wrap">
-                                {event.detail}
+                                {event.detail.split(/((?:https?:\/\/|www\.)[^\s]+|[a-z0-9]+(?:[-.][a-z0-9]+)*\.(?:com|net|org|edu|gov|tv|io|jp|me)(?:\/[^\s]*)?)/gi).map((part, i) => {
+                                    const isUrl = /((?:https?:\/\/|www\.)[^\s]+|[a-z0-9]+(?:[-.][a-z0-9]+)*\.(?:com|net|org|edu|gov|tv|io|jp|me)(?:\/[^\s]*)?)/i.test(part);
+                                    if (isUrl) {
+                                        const href = part.startsWith("http") ? part : `https://${part}`;
+                                        return (
+                                            <a
+                                                key={i}
+                                                href={href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-[var(--color-brand-primary)] hover:text-white underline decoration-[var(--color-brand-primary)]/40 hover:decoration-white transition-all break-all inline-block font-medium"
+                                            >
+                                                {part}
+                                            </a>
+                                        );
+                                    }
+                                    return <span key={i}>{part}</span>;
+                                })}
                             </div>
                         </div>
                     )}
