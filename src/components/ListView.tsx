@@ -135,7 +135,7 @@ const ListView = memo(function ListView({
                 displayEvents.map((event) => {
                     const eventDate = event.date ? parseISO(event.date) : new Date();
                     const past = isPast(eventDate) && format(eventDate, "yyyyMMdd") !== format(now, "yyyyMMdd");
-                    const isTBA = event.status === "公開(TBA)" || event.title.toUpperCase().startsWith("TBA");
+                    const isTBA = event.status === "公開(TBA)";
                     const isCanceled = event.status === "中止";
                     const isPostponed = event.status === "延期";
                     const hasWarning = isCanceled || isPostponed;

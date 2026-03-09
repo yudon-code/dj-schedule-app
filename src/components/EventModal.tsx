@@ -52,10 +52,7 @@ export default function EventModal({
 
     const hasMultipleImages = event.flyerUrls && event.flyerUrls.length > 1;
 
-    // TBA判定の強化: ステータス、タイトル、またはTBAコメントの存在を確認
-    const isTBA = event.status === "公開(TBA)" ||
-        event.title.toUpperCase().startsWith("TBA") ||
-        (!!event.tbaComment && event.tbaComment.trim() !== "");
+    const isTBA = event.status === "公開(TBA)";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 animate-in fade-in duration-300">
@@ -153,7 +150,7 @@ export default function EventModal({
                     )}
 
                     <div className="flex flex-col md:flex-row md:items-center gap-3 mb-8">
-                        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-tight">
+                        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-tight whitespace-pre-wrap">
                             {isTBA ? "TBA" : event.title}
                         </h2>
                         {event.status === "中止" && (

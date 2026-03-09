@@ -152,7 +152,7 @@ const CalendarView = memo(function CalendarView({
                                 {dayEvents.length > 0 && (
                                     <div className={`grid overflow-hidden flex-1 min-h-[60px] ${dayEvents.length >= 2 ? 'grid-cols-2 gap-0.5' : 'grid-cols-1'}`}>
                                         {dayEvents.slice(0, 4).map((event) => {
-                                            const isTBA = event.status === "公開(TBA)" || (!!event.tbaComment && event.tbaComment.trim() !== "");
+                                            const isTBA = event.status === "公開(TBA)";
                                             const isCanceled = event.status === "中止";
                                             const isPostponed = event.status === "延期";
                                             const hasWarning = isCanceled || isPostponed;
