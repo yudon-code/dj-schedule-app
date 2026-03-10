@@ -184,6 +184,11 @@ const ListView = memo(function ListView({
                                 <div className="flex items-center gap-2 mb-1">
                                     <h3 className={`text-sm md:text-base font-bold truncate leading-tight ${isTBA ? "text-[var(--color-text-tertiary)] italic" : "text-[var(--color-text-primary)]"}`}>
                                         {isTBA ? "TBA" : (event.title || "Untitled Event")}
+                                        {event.eventSubtext && !isTBA && (
+                                            <span className="ml-2 text-[0.9em] text-[#bbbbbb] font-medium">
+                                                {event.eventSubtext}
+                                            </span>
+                                        )}
                                     </h3>
                                     {hasWarning && (
                                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">

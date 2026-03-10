@@ -23,6 +23,7 @@ export type DJEvent = {
     flyerUrls: string[];
     status: string;
     tbaComment?: string;
+    eventSubtext?: string;
     holiday?: {
         isHoliday: boolean;
         name?: string;
@@ -155,6 +156,7 @@ export async function getEvents(): Promise<DJEvent[]> {
                 detail: getText(p["イベント詳細"] || p["Detail"]),
                 status: status,
                 tbaComment: getText(p["TBAコメント"] || p["TBAComment"]),
+                eventSubtext: getText(p["イベントサブテキスト"] || p["EventSubtext"]),
                 flyerUrls,
                 holiday: holidayInfo.isHoliday ? holidayInfo : undefined,
                 sortTime: getText(p["開始時間"]) || "9999",

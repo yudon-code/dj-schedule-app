@@ -150,9 +150,16 @@ export default function EventModal({
                     )}
 
                     <div className="flex flex-col md:flex-row md:items-center gap-3 mb-8">
-                        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-tight whitespace-pre-wrap">
-                            {isTBA ? "TBA" : event.title}
-                        </h2>
+                        <div className="flex flex-col min-w-0">
+                            <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-tight whitespace-pre-wrap">
+                                {isTBA ? "TBA" : event.title}
+                            </h2>
+                            {event.eventSubtext && !isTBA && (
+                                <p className="mt-1 text-[0.9em] text-[#bbbbbb] font-medium whitespace-pre-wrap">
+                                    {event.eventSubtext}
+                                </p>
+                            )}
+                        </div>
                         {event.status === "中止" && (
                             <span className="px-3 py-1 rounded-full text-sm font-bold bg-red-500/20 text-red-500 border border-red-500/30 whitespace-nowrap self-start md:self-auto">
                                 中止 (CANCELED)

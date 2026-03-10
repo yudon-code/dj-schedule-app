@@ -162,7 +162,7 @@ const CalendarView = memo(function CalendarView({
                                                     key={event.id}
                                                     onClick={() => onSelectEvent(event)}
                                                     className={`relative w-full h-full min-h-[40px] group text-left overflow-hidden rounded ${hasWarning ? "opacity-50 grayscale" : ""}`}
-                                                    title={isTBA ? (event.tbaComment || "TBA") : event.title}
+                                                    title={isTBA ? (event.tbaComment || "TBA") : (event.title + (event.eventSubtext ? '\n' + event.eventSubtext : ''))}
                                                 >
                                                     {event.flyerUrls && event.flyerUrls.length > 0 ? (
                                                         <div className="absolute inset-0 bg-[var(--color-surface-elevated)] border border-[var(--color-border-subtle)] group-hover:border-[var(--color-brand-primary)]/50 transition-colors overflow-hidden">
@@ -185,8 +185,11 @@ const CalendarView = memo(function CalendarView({
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <div className="absolute inset-0 bg-[var(--color-brand-accent)]/20 border-2 border-[var(--color-brand-accent)]/40 text-[var(--color-brand-accent)] flex items-center justify-center text-center">
-                                                            <span className="font-bold text-[10px]">{isTBA ? "TBA" : ""}</span>
+                                                        <div className="absolute inset-0 bg-[var(--color-brand-accent)]/20 border-2 border-[var(--color-brand-accent)]/40 text-[var(--color-brand-accent)] flex flex-col items-center justify-center text-center p-1">
+                                                            <span className="font-bold text-[10px] w-full truncate">{isTBA ? "TBA" : event.title}</span>
+                                                            {event.eventSubtext && !isTBA && (
+                                                                <span className="font-bold text-[10px] truncate w-full px-1">{event.eventSubtext}</span>
+                                                            )}
                                                             {hasWarning && (
                                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
                                                                     <span className="text-white font-bold text-[10px] px-1 rounded bg-red-500/80">{isCanceled ? "中止" : "延期"}</span>
